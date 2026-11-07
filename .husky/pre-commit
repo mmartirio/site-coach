@@ -1,0 +1,6 @@
+# A raiz do git e D:/Projetos (varios projetos): so roda se o commit mexe no SITE-COACH.
+git diff --cached --name-only | grep -q "^SITE-COACH/" || exit 0
+
+cd SITE-COACH
+npm run typecheck
+npm test -- --ci
