@@ -26,7 +26,7 @@ function mover<T>(lista: T[], de: number, para: number) {
   lista.splice(para, 0, x);
 }
 
-export function Editor({ inicial }: { inicial: Site }) {
+export function Editor({ inicial, aviso = null }: { inicial: Site; aviso?: string | null }) {
   const [site, setSite] = useState(inicial);
   const [salvo, setSalvo] = useState(() => JSON.stringify(inicial));
   const [aba, setAba] = useState<Aba>("secoes");
@@ -75,6 +75,11 @@ export function Editor({ inicial }: { inicial: Site }) {
 
   return (
     <div className="adm-painel">
+      {aviso && (
+        <p className="adm-aviso" role="alert">
+          {aviso}
+        </p>
+      )}
       <header className="adm-topo">
         <strong>Painel do site</strong>
         <div className="adm-topo__acoes">

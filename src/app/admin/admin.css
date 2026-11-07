@@ -170,3 +170,5 @@
 }
 .adm-senha__ver:hover { background: #f0f2f5; color: var(--a-texto); }
 .adm-senha__ver:focus-visible { outline: 2px solid var(--a-azul); outline-offset: 1px; }
+
+.adm-aviso { margin: 0; padding: 0.6rem 1rem; background: #fff8c5; border-bottom: 1px solid #d4a72c; color: #4d2d00; font-size: 0.85rem; }

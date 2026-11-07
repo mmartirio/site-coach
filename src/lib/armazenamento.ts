@@ -5,6 +5,13 @@ import { conteudoPadrao } from "./conteudo-padrao";
 import { siteSchema, type Site } from "./schema";
 
 export const DIR_DADOS = process.env.DATA_DIR || path.join(process.cwd(), "data");
+
+export const AVISO_SEM_ARMAZENAMENTO =
+  "Esta hospedagem não guarda arquivos de forma permanente: o que fosse salvo aqui se perderia. Para editar o site, publique em um servidor com armazenamento (Docker).";
+
+export function armazenamentoPermanente(): boolean {
+  return !(process.env.VERCEL && !process.env.DATA_DIR);
+}
 export const DIR_UPLOADS = path.join(DIR_DADOS, "uploads");
 const ARQUIVO_SITE = path.join(DIR_DADOS, "site.json");
 

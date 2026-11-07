@@ -78,3 +78,22 @@ describe("detectarTipoImagem", () => {
     expect(detectarTipoImagem(bytes(""))).toBeNull();
   });
 });
+
+describe("armazenamento em hospedagens sem disco permanente", () => {
+  const original = { ...process.env };
+  afterEach(() => {
+    process.env = { ...original };
+  });
+
+  it("na Vercel sem DATA_DIR o painel não salva", async () => {
+    const { armazenamentoPermanente } = await import("@/lib/armazenamento");
+    process.env.VERCEL = "1";
+    delete process.env.DATA_DIR;
+    expect(armazenamentoPermanente()).toBe(false);
+    process.env.DATA_DIR = "/mnt/dados";
+    expect(armazenamentoPermanente()).toBe(true);
+    delete process.env.VERCEL;
+    delete process.env.DATA_DIR;
+    expect(armazenamentoPermanente()).toBe(true);
+  });
+});

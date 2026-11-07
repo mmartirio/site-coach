@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { estaLogado } from "@/lib/auth";
-import { salvarSite } from "@/lib/armazenamento";
+import { armazenamentoPermanente, AVISO_SEM_ARMAZENAMENTO, salvarSite } from "@/lib/armazenamento";
 import { siteSchema } from "@/lib/schema";
 import { COOKIE_SESSAO, credenciaisCorretas, criarToken, DURACAO_SESSAO_MS } from "@/lib/sessao";
 
@@ -36,6 +36,7 @@ export type ResultadoSalvar = { ok: true } | { ok: false; erro: string };
 
 export async function salvar(dados: unknown): Promise<ResultadoSalvar> {
   if (!(await estaLogado())) return { ok: false, erro: "Sua sessão expirou. Recarregue a página e entre novamente." };
+  if (!armazenamentoPermanente()) return { ok: false, erro: AVISO_SEM_ARMAZENAMENTO };
 
   const r = siteSchema.safeParse(dados);
   if (!r.success) {

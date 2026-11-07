@@ -2,11 +2,12 @@ import { randomUUID } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { estaLogado } from "@/lib/auth";
-import { DIR_UPLOADS } from "@/lib/armazenamento";
+import { armazenamentoPermanente, AVISO_SEM_ARMAZENAMENTO, DIR_UPLOADS } from "@/lib/armazenamento";
 import { detectarTipoImagem, TAMANHO_MAXIMO_IMAGEM } from "@/lib/imagens";
 
 export async function POST(req: Request) {
   if (!(await estaLogado())) return Response.json({ erro: "Sessão expirada. Entre novamente." }, { status: 401 });
+  if (!armazenamentoPermanente()) return Response.json({ erro: AVISO_SEM_ARMAZENAMENTO }, { status: 503 });
 
   const form = await req.formData().catch(() => null);
   const arquivo = form?.get("arquivo");
