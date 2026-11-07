@@ -9,3 +9,5 @@ docker-compose.yml
 data
 .env
 .env.local
+.github
+docker-compose.prod.yml
