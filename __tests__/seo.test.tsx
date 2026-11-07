@@ -108,3 +108,16 @@ describe("Google Analytics com consentimento (LGPD)", () => {
     expect(screen.getByRole("contentinfo")).toHaveTextContent("Preferências de cookies");
   });
 });
+
+describe("política de cookies", () => {
+  it("o rodapé sempre tem o link da política", () => {
+    render(<SiteView site={conteudoPadrao} />);
+    expect(screen.getByRole("link", { name: "Política de cookies" })).toHaveAttribute("href", "/cookies");
+  });
+
+  it("o aviso de consentimento leva à política", () => {
+    localStorage.clear();
+    render(<Analytics id="G-TESTE12345" />);
+    expect(screen.getByRole("link", { name: "Saiba mais" })).toHaveAttribute("href", "/cookies");
+  });
+});

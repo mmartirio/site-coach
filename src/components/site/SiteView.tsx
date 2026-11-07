@@ -72,6 +72,7 @@ export function SiteView({ site, rodapeExtra }: { site: Site; rodapeExtra?: Reac
                 Instagram
               </a>
             )}
+            <a href="/cookies">Política de cookies</a>
             {rodapeExtra}
           </span>
         </div>

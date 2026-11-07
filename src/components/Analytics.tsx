@@ -73,7 +73,8 @@ export function Analytics({ id }: { id: string }) {
       {escolha === null && (
         <div className="cookies" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
           <p>
-            Usamos cookies do Google Analytics para entender como o site é usado e melhorar o conteúdo. Você pode aceitar ou recusar.
+            Usamos cookies do Google Analytics para entender como o site é usado e melhorar o conteúdo. Você pode aceitar ou recusar.{" "}
+            <a href="/cookies">Saiba mais</a>
           </p>
           <div className="cookies__acoes">
             <button type="button" className="btn btn--ghost btn--small" onClick={() => escolher("recusado")}>

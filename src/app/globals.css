@@ -229,3 +229,20 @@ p + p { margin-top: 1rem; }
   .texto-imagem--direita > :first-child { order: 0; }
   .texto-imagem__foto { width: 180px; margin-inline: auto; }
 }
+
+.cookies a { color: var(--cor-primaria); text-decoration: underline; }
+
+.pagina-legal { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+.pagina-legal .container { max-width: 860px; }
+.pagina-legal h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin: 1rem 0 1.25rem; color: var(--cor-titulos); }
+.pagina-legal h2 { font-size: 1.5rem; margin: 2.25rem 0 1rem; }
+.pagina-legal p { color: var(--cor-texto); }
+.pagina-legal a { color: var(--cor-primaria); text-decoration: underline; }
+.pagina-legal__voltar { font-weight: 600; text-decoration: none !important; }
+.pagina-legal__tabela { overflow-x: auto; border-radius: var(--raio); border: 1px solid color-mix(in srgb, var(--cor-primaria) 15%, transparent); }
+.pagina-legal table { width: 100%; border-collapse: collapse; background: var(--cor-cartao); font-size: 0.95rem; }
+.pagina-legal th, .pagina-legal td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid color-mix(in srgb, var(--cor-primaria) 10%, transparent); }
+.pagina-legal th { color: var(--cor-titulos); background: var(--cor-fundo-alt); }
+.pagina-legal tr:last-child td { border-bottom: 0; }
+.pagina-legal code { font-size: 0.85em; white-space: nowrap; }
+.pagina-legal .footer__cookies { color: var(--cor-primaria); font-weight: 600; }

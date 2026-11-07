@@ -6,5 +6,10 @@ export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const site = await lerSite();
-  return [{ url: `${await urlBase(site)}/`, lastModified: await dataDoConteudo(), changeFrequency: "weekly", priority: 1 }];
+  const base = await urlBase(site);
+  const lastModified = await dataDoConteudo();
+  return [
+    { url: `${base}/`, lastModified, changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/cookies`, lastModified, changeFrequency: "yearly", priority: 0.2 },
+  ];
 }
