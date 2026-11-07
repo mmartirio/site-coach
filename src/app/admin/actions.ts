@@ -1,0 +1,61 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { estaLogado } from "@/lib/auth";
+import { salvarSite } from "@/lib/armazenamento";
+import { siteSchema } from "@/lib/schema";
+import { COOKIE_SESSAO, criarToken, DURACAO_SESSAO_MS, senhaCorreta } from "@/lib/sessao";
+
+// Em produção o cookie só trafega por HTTPS. Para testar o Docker via http num IP da rede, use COOKIE_SECURE=false.
+const cookieSeguro = () => process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== "false";
+
+export async function entrar(formData: FormData) {
+  const senha = String(formData.get("senha") ?? "");
+  if (!senhaCorreta(senha)) {
+    await new Promise((r) => setTimeout(r, 1000)); // atrasa tentativas de adivinhar a senha
+    redirect("/admin/login?erro=1");
+  }
+  (await cookies()).set(COOKIE_SESSAO, criarToken(), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: cookieSeguro(),
+    path: "/",
+    maxAge: DURACAO_SESSAO_MS / 1000,
+  });
+  redirect("/admin");
+}
+
+export async function sair() {
+  (await cookies()).delete(COOKIE_SESSAO);
+  redirect("/admin/login");
+}
+
+export type ResultadoSalvar = { ok: true } | { ok: false; erro: string };
+
+export async function salvar(dados: unknown): Promise<ResultadoSalvar> {
+  if (!(await estaLogado())) return { ok: false, erro: "Sua sessão expirou. Recarregue a página e entre novamente." };
+
+  const r = siteSchema.safeParse(dados);
+  if (!r.success) {
+    const issue = r.error.issues[0];
+    return { ok: false, erro: `${issue.message} — em ${descreverCaminho(issue.path, dados)}` };
+  }
+
+  await salvarSite(r.data);
+  revalidatePath("/", "layout");
+  return { ok: true };
+}
+
+function descreverCaminho(caminho: PropertyKey[], dados: unknown): string {
+  const [raiz, i, sub, j] = caminho;
+  if (raiz === "secoes" && typeof i === "number") {
+    const titulo = (dados as { secoes?: { titulo?: string }[] })?.secoes?.[i]?.titulo;
+    const partes = [`seção "${titulo || i + 1}"`];
+    if (sub === "itens" && typeof j === "number") partes.push(`item ${j + 1}`);
+    partes.push(String(caminho.at(-1)));
+    return partes.join(" › ");
+  }
+  return caminho.map(String).join(" › ");
+}
