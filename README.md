@@ -100,7 +100,8 @@ Cada etapa só começa se a anterior passar, então **nenhum deploy acontece sem
 2. **Imagem Docker:** monta a imagem e testa o container rodando (página, dados estruturados, `robots.txt`,
    `sitemap.xml`, `/cookies`, `/og`, login com e-mail, painel e upload protegidos). Na branch `main`, publica a
    imagem testada em `ghcr.io/mmartirio/site-coach` com as tags `latest` e o SHA do commit.
-3. **Deploy (opcional):** na `main`, atualiza o servidor por SSH com a imagem do commit e confere o site publicado.
+3. **Deploy (opcionais):** na `main`, **Deploy na Vercel** (depois dos testes) e **Deploy** por SSH num servidor próprio
+   (depois da imagem testada). Cada um só roda quando está configurado e confere o site publicado.
 
 O Dependabot abre pull requests semanais com atualizações de npm, Actions e Docker; eles passam pelo mesmo pipeline.
 
@@ -121,6 +122,24 @@ O deploy fica desligado até a variável `DEPLOY_HOST` existir. Em **Settings �
 No servidor: Docker com Compose e um arquivo `.env` na pasta de deploy com `ADMIN_EMAIL`, `ADMIN_PASSWORD` e,
 de preferência, `SITE_URL`. O site sobe na porta 3010; coloque um proxy com HTTPS (Nginx, Caddy, Traefik) na frente.
 O ambiente `producao` pode exigir aprovação manual em **Settings › Environments**.
+
+## Vercel (vitrine)
+
+O site também está publicado na Vercel: https://site-coach-tree.vercel.app (funções em São Paulo, `gru1`, via [`vercel.json`](vercel.json)).
+
+- A Vercel não guarda arquivos de forma permanente, então **lá o painel não salva** (mostra um aviso). O conteúdo exibido é o
+  padrão do código. Para editar o site pelo painel, use a hospedagem com Docker.
+- O GitHub **não** está conectado à Vercel de propósito: o deploy acontece pelo pipeline, no job **Deploy na Vercel**,
+  que só roda depois dos testes. Para ligá-lo, em **Settings › Secrets and variables › Actions**:
+
+| Tipo | Nome | Valor |
+| --- | --- | --- |
+| Secret | `VERCEL_TOKEN` | Token criado em https://vercel.com/account/tokens |
+| Variable | `VERCEL_ORG_ID` | `team_ixpieGZZ5eMNIvPCNeggC19Y` |
+| Variable | `VERCEL_PROJECT_ID` | `prj_iUA4uAB5BjarB7BlmM8ZW6wV5PPe` |
+| Variable | `VERCEL_URL_PRODUCAO` | `https://site-coach-tree.vercel.app` |
+
+Deploy manual (depois de `npm test` passar): `vercel deploy --prod`. O `.vercelignore` impede o envio de `.env.local` e `data/`.
 
 ## Docker
 

@@ -108,6 +108,46 @@ jobs:
             ${{ env.IMAGEM }}:${{ github.sha }}
           cache-from: type=gha
 
+  vercel:
+    name: Deploy na Vercel
+    needs: testes
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.VERCEL_PROJECT_ID != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: producao-vercel
+      url: ${{ vars.VERCEL_URL_PRODUCAO }}
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instala a CLI da Vercel
+        run: npm install --global vercel@latest
+
+      - name: Build para a Vercel
+        run: |
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Publica a build testada
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Confere o site publicado
+        if: vars.VERCEL_URL_PRODUCAO != ''
+        run: |
+          URL="${{ vars.VERCEL_URL_PRODUCAO }}"
+          for i in $(seq 1 20); do curl -fs "$URL/robots.txt" >/dev/null && break; sleep 5; done
+          curl -fsS "$URL/" | grep -q 'application/ld+json'
+          curl -fsS "$URL/sitemap.xml" | grep -q '<loc>'
+          curl -fsS "$URL/cookies" | grep -q 'Política de cookies'
+
   deploy:
     name: Deploy
     needs: imagem
