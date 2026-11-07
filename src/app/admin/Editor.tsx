@@ -6,6 +6,7 @@ import { NOMES_BLOCO, nomeDoTipo, novaSecao, novoBloco, novoId, novoItem } from 
 import { CHAVES_FONTES, FONTES } from "@/lib/fontes";
 import { aplicarTema, TEMAS, temaAtivo } from "@/lib/temas";
 import type { Bloco, Item, Secao, Site, Tema, TipoBloco, TipoSecao } from "@/lib/schema";
+import { cssDasFontes } from "@/lib/fontes-css";
 import { varsDoTema } from "@/lib/utils";
 import { sair, salvar } from "./actions";
 import { Alternar, Campo, CampoArea, CampoCor, CampoImagem, CampoTexto, enviarImagem, SeletorIcone } from "./Campos";
@@ -119,6 +120,7 @@ export function Editor({ inicial }: { inicial: Site }) {
 
         <section className="adm-preview" aria-label="Pré-visualização">
           <div className="adm-preview__rotulo">Pré-visualização (atualiza enquanto você edita)</div>
+          <style dangerouslySetInnerHTML={{ __html: cssDasFontes(CHAVES_FONTES) }} />
           <div className="adm-preview__site site-raiz" style={varsDoTema(site.tema)}>
             <SiteView site={site} />
           </div>

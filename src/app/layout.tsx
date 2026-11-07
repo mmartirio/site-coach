@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { lerSite } from "@/lib/armazenamento";
 import { imagemCompartilhamento, urlBase } from "@/lib/seo";
+import { arquivoParaPreload, cssDasFontes } from "@/lib/fontes-css";
 import { varsDoTema } from "@/lib/utils";
 import "./globals.css";
 
@@ -40,8 +41,14 @@ export async function generateViewport(): Promise<Viewport> {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { tema } = await lerSite();
+  const css = cssDasFontes([tema.fonteTitulos, tema.fonteTexto]);
+  const preloadTitulos = arquivoParaPreload(tema.fonteTitulos);
   return (
     <html lang="pt-BR" style={varsDoTema(tema)}>
+      <head>
+        {preloadTitulos && <link rel="preload" href={preloadTitulos} as="font" type="font/woff2" crossOrigin="" />}
+        {css && <style dangerouslySetInnerHTML={{ __html: css }} />}
+      </head>
       <body>{children}</body>
     </html>
   );

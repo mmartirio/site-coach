@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { FAMILIAS } from "./fontes-carregadas";
+import { FAMILIAS } from "./familias";
 import type { Tema } from "./schema";
 
 export function whatsappLink(numero: string, mensagem: string): string {
