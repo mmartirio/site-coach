@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import { EVENTO_ABRIR_COOKIES } from "./BotaoCookies";
 
 declare global {
   interface Window {
@@ -11,7 +12,6 @@ declare global {
 }
 
 export const CHAVE_CONSENTIMENTO = "consentimento-analytics";
-const EVENTO_ABRIR = "abrir-preferencias-cookies";
 type Escolha = "aceito" | "recusado";
 
 function apagarCookiesGa() {
@@ -40,8 +40,8 @@ export function Analytics({ id }: { id: string }) {
     const salvo = localStorage.getItem(CHAVE_CONSENTIMENTO);
     setEscolha(salvo === "aceito" || salvo === "recusado" ? salvo : null);
     const abrir = () => setEscolha(null);
-    window.addEventListener(EVENTO_ABRIR, abrir);
-    return () => window.removeEventListener(EVENTO_ABRIR, abrir);
+    window.addEventListener(EVENTO_ABRIR_COOKIES, abrir);
+    return () => window.removeEventListener(EVENTO_ABRIR_COOKIES, abrir);
   }, []);
 
   useEffect(() => {
@@ -87,13 +87,5 @@ export function Analytics({ id }: { id: string }) {
         </div>
       )}
     </>
-  );
-}
-
-export function BotaoCookies() {
-  return (
-    <button type="button" className="footer__cookies" onClick={() => window.dispatchEvent(new Event(EVENTO_ABRIR))}>
-      Preferências de cookies
-    </button>
   );
 }

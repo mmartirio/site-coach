@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BotaoCookies } from "@/components/Analytics";
+import { BotaoCookies } from "@/components/BotaoCookies";
 import { lerSite } from "@/lib/armazenamento";
 
 export const dynamic = "force-dynamic";

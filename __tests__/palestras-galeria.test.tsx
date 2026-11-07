@@ -76,16 +76,16 @@ describe("galeria", () => {
     HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
   });
 
-  it("mostra uma miniatura por foto, com legenda", () => {
+  it("mostra uma miniatura por foto, com legenda", async () => {
     render(<SiteView site={comGaleria(3)} />);
     const secao = document.getElementById("galeria")!;
-    expect(within(secao).getAllByRole("button", { name: /ampliar foto/i })).toHaveLength(3);
+    expect(await within(secao).findAllByRole("button", { name: /ampliar foto/i })).toHaveLength(3);
     expect(within(secao).getByText("Palestra em SP")).toBeInTheDocument();
   });
 
-  it("clicar amplia a foto e as setas navegam", () => {
+  it("clicar amplia a foto e as setas navegam", async () => {
     render(<SiteView site={comGaleria(3)} />);
-    fireEvent.click(screen.getByRole("button", { name: "Ampliar foto: Palestra em SP" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Ampliar foto: Palestra em SP" }));
     const tela = document.querySelector("dialog")!;
     expect(tela).toHaveAttribute("open");
     expect(within(tela).getByText(/1 de 3/)).toBeInTheDocument();

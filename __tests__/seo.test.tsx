@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { Analytics, CHAVE_CONSENTIMENTO } from "@/components/Analytics";
+import { BotaoCookies } from "@/components/BotaoCookies";
 import { SiteView } from "@/components/site/SiteView";
 import { conteudoPadrao } from "@/lib/conteudo-padrao";
 import { siteSchema, type Site } from "@/lib/schema";
@@ -91,7 +92,6 @@ describe("Google Analytics com consentimento (LGPD)", () => {
 
   it("quem já escolheu não vê o aviso de novo, mas pode reabrir pelo rodapé", async () => {
     localStorage.setItem(CHAVE_CONSENTIMENTO, "recusado");
-    const { BotaoCookies } = await import("@/components/Analytics");
     render(
       <>
         <Analytics id="G-TESTE12345" />
@@ -119,5 +119,19 @@ describe("política de cookies", () => {
     localStorage.clear();
     render(<Analytics id="G-TESTE12345" />);
     expect(screen.getByRole("link", { name: "Saiba mais" })).toHaveAttribute("href", "/cookies");
+  });
+});
+
+describe("desempenho das imagens", () => {
+  it("imagens do site são <img> gerado no servidor, com srcset otimizado e carregamento sob demanda", () => {
+    const site = clonar();
+    site.topo.imagem = "/uploads/topo.jpg";
+    render(<SiteView site={site} />);
+    const topo = document.querySelector(".hero__imagem") as HTMLImageElement;
+    expect(topo.getAttribute("srcset")).toContain("/_next/image?url=%2Fuploads%2Ftopo.jpg");
+    expect(topo).toHaveAttribute("fetchpriority", "high");
+    expect(topo).toHaveAttribute("loading", "eager");
+    const evento = document.querySelector(".evento__imagem img") as HTMLImageElement;
+    expect(evento).toHaveAttribute("loading", "lazy");
   });
 });

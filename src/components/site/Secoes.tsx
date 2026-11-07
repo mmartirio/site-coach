@@ -1,8 +1,10 @@
 import type { Bloco, Item, Secao, Site } from "@/lib/schema";
 import { Icone } from "@/lib/icones";
 import { atributosLink, hrefDoBotao, linkExterno, whatsappLink } from "@/lib/utils";
-import { Galeria } from "./Galeria";
+import dynamic from "next/dynamic";
 import { Imagem } from "./Imagem";
+
+const Galeria = dynamic(() => import("./Galeria").then((m) => m.Galeria));
 import { Paragrafos } from "./Paragrafos";
 
 type Props<T extends Secao["tipo"]> = { secao: Extract<Secao, { tipo: T }>; site: Site };
