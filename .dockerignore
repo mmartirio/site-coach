@@ -1,0 +1,11 @@
+node_modules
+.next
+coverage
+.husky
+.git
+__tests__
+Dockerfile
+docker-compose.yml
+data
+.env
+.env.local

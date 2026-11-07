@@ -1,0 +1,17 @@
+services:
+  site:
+    build: .
+    ports:
+      - "3010:3000"
+    environment:
+      # Defina ADMIN_PASSWORD num arquivo .env ao lado deste (veja .env.example).
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Defina ADMIN_PASSWORD no arquivo .env}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+    volumes:
+      # Conteúdo editado no painel e imagens enviadas sobrevivem a novos deploys.
+      - site-dados:/app/data
+    restart: unless-stopped
+
+volumes:
+  site-dados:
