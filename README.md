@@ -27,7 +27,7 @@ e rode `npm run dev`.
 
 ## Painel (`/admin`)
 
-Login com **e-mail e senha** (`ADMIN_EMAIL` e `ADMIN_PASSWORD`). A sessão dura 7 dias e é encerrada ao trocar
+Login com **e-mail e senha** (`ADMIN_EMAIL` e `ADMIN_PASSWORD`), com botão para mostrar a senha. A sessão dura 7 dias e é encerrada ao trocar
 qualquer um dos dois.
 
 | Aba | O que dá para alterar |
@@ -83,9 +83,13 @@ Configurado no painel, aba **Informações › Google e compartilhamento**:
 - **Analytics e LGPD:** o script do Google só carrega depois que o visitante clica em **Aceitar** no aviso de cookies.
   A [política de cookies](src/app/cookies/page.tsx) fica em `/cookies`, com link no aviso e no rodapé, e permite mudar a
   escolha. Eventos enviados: `generate_lead` (WhatsApp, e-mail) e `select_content` (inscrição em palestra/treinamento).
-- **PageSpeed:** fontes servidas pelo próprio site (next/font), imagens otimizadas pelo Next (AVIF/WebP, tamanho por
-  tela, carregamento sob demanda; a foto do topo é pré-carregada) e Analytics fora do caminho até haver consentimento.
-  O build precisa de internet uma vez para baixar as fontes.
+- **PageSpeed:** a página só leva as **duas fontes do tema**, servidas pelo próprio site (`public/fontes`, com cache
+  de 1 ano) e com a fonte dos títulos pré-carregada; o tema padrão não baixa fonte nenhuma. Imagens são geradas no
+  servidor com otimização do Next (AVIF/WebP, tamanho por tela, carregamento sob demanda; a foto do topo tem prioridade),
+  sem JavaScript no navegador. Galeria e Analytics só carregam JavaScript quando existem na página.
+  As animações de rolagem são só CSS (`animation-timeline: view()`) e respeitam "reduzir movimento".
+- **Fontes:** para atualizar ou trocar as fontes do painel, rode `node scripts/baixar-fontes.mjs` (baixa os arquivos
+  `.woff2` do Google Fonts e gera `src/lib/fontes-css.ts`). O build não precisa de internet.
 
 ## CI/CD
 
