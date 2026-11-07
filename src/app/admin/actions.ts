@@ -6,13 +6,14 @@ import { redirect } from "next/navigation";
 import { estaLogado } from "@/lib/auth";
 import { salvarSite } from "@/lib/armazenamento";
 import { siteSchema } from "@/lib/schema";
-import { COOKIE_SESSAO, criarToken, DURACAO_SESSAO_MS, senhaCorreta } from "@/lib/sessao";
+import { COOKIE_SESSAO, credenciaisCorretas, criarToken, DURACAO_SESSAO_MS } from "@/lib/sessao";
 
 const cookieSeguro = () => process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== "false";
 
 export async function entrar(formData: FormData) {
+  const email = String(formData.get("email") ?? "");
   const senha = String(formData.get("senha") ?? "");
-  if (!senhaCorreta(senha)) {
+  if (!credenciaisCorretas(email, senha)) {
     await new Promise((r) => setTimeout(r, 1000));
     redirect("/admin/login?erro=1");
   }

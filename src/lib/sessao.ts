@@ -4,28 +4,38 @@ export const COOKIE_SESSAO = "coach_admin";
 export const DURACAO_SESSAO_MS = 7 * 24 * 60 * 60 * 1000;
 
 const sha256 = (v: string) => createHash("sha256").update(v).digest();
+const normalizarEmail = (v: string) => v.trim().toLowerCase();
+const iguais = (a: string, b: string) => timingSafeEqual(sha256(a), sha256(b));
+
+function credenciais(): { email: string; senha: string } | null {
+  const email = process.env.ADMIN_EMAIL;
+  const senha = process.env.ADMIN_PASSWORD;
+  return email && senha ? { email: normalizarEmail(email), senha } : null;
+}
 
 function segredo(): string | null {
   if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
-  if (process.env.ADMIN_PASSWORD) return sha256(`sessao:${process.env.ADMIN_PASSWORD}`).toString("hex");
-  return null;
+  const c = credenciais();
+  return c ? sha256(`sessao:${c.email}:${c.senha}`).toString("hex") : null;
 }
 
 const assinar = (dado: string, chave: string) => createHmac("sha256", chave).update(dado).digest("hex");
 
 export function painelConfigurado(): boolean {
-  return Boolean(process.env.ADMIN_PASSWORD);
+  return credenciais() !== null;
 }
 
-export function senhaCorreta(senha: string): boolean {
-  const esperada = process.env.ADMIN_PASSWORD;
-  if (!esperada) return false;
-  return timingSafeEqual(sha256(senha), sha256(esperada));
+export function credenciaisCorretas(email: string, senha: string): boolean {
+  const c = credenciais();
+  if (!c) return false;
+  const emailOk = iguais(normalizarEmail(email), c.email);
+  const senhaOk = iguais(senha, c.senha);
+  return emailOk && senhaOk;
 }
 
 export function criarToken(agora = Date.now()): string {
   const chave = segredo();
-  if (!chave) throw new Error("ADMIN_PASSWORD não configurada");
+  if (!chave) throw new Error("ADMIN_EMAIL e ADMIN_PASSWORD não configurados");
   const expira = String(agora + DURACAO_SESSAO_MS);
   return `${expira}.${assinar(expira, chave)}`;
 }

@@ -13,16 +13,20 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
         <h1>Painel do site</h1>
         {!painelConfigurado() ? (
           <p className="adm-erro">
-            O painel está desativado: defina a variável <code>ADMIN_PASSWORD</code> (no arquivo <code>.env.local</code> ou no
-            Docker) e reinicie o servidor.
+            O painel está desativado: defina as variáveis <code>ADMIN_EMAIL</code> e <code>ADMIN_PASSWORD</code> (no arquivo{" "}
+            <code>.env.local</code> ou no Docker) e reinicie o servidor.
           </p>
         ) : (
           <>
             <label className="adm-campo">
-              <span>Senha</span>
-              <input type="password" name="senha" required autoFocus autoComplete="current-password" />
+              <span>E-mail</span>
+              <input type="email" name="email" required autoFocus autoComplete="username" />
             </label>
-            {erro && <p className="adm-erro">Senha incorreta.</p>}
+            <label className="adm-campo">
+              <span>Senha</span>
+              <input type="password" name="senha" required autoComplete="current-password" />
+            </label>
+            {erro && <p className="adm-erro">E-mail ou senha incorretos.</p>}
             <button className="adm-btn adm-btn--primario" type="submit">
               Entrar
             </button>

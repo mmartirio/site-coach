@@ -1,10 +1,11 @@
 /** @jest-environment node */
-import { criarToken, DURACAO_SESSAO_MS, senhaCorreta, tokenValido } from "@/lib/sessao";
+import { credenciaisCorretas, criarToken, DURACAO_SESSAO_MS, painelConfigurado, tokenValido } from "@/lib/sessao";
 import { detectarTipoImagem } from "@/lib/imagens";
 
 describe("sessão do painel", () => {
   const original = { ...process.env };
   beforeEach(() => {
+    process.env.ADMIN_EMAIL = "Coach@Exemplo.com.br";
     process.env.ADMIN_PASSWORD = "senha-de-teste";
     delete process.env.SESSION_SECRET;
   });
@@ -12,16 +13,26 @@ describe("sessão do painel", () => {
     process.env = original;
   });
 
-  it("confere a senha", () => {
-    expect(senhaCorreta("senha-de-teste")).toBe(true);
-    expect(senhaCorreta("errada")).toBe(false);
-    expect(senhaCorreta("")).toBe(false);
+  it("confere e-mail e senha juntos", () => {
+    expect(credenciaisCorretas("coach@exemplo.com.br", "senha-de-teste")).toBe(true);
+    expect(credenciaisCorretas("coach@exemplo.com.br", "errada")).toBe(false);
+    expect(credenciaisCorretas("outra@exemplo.com.br", "senha-de-teste")).toBe(false);
+    expect(credenciaisCorretas("", "")).toBe(false);
   });
 
-  it("sem ADMIN_PASSWORD, nenhuma senha funciona", () => {
-    delete process.env.ADMIN_PASSWORD;
-    expect(senhaCorreta("")).toBe(false);
+  it("o e-mail não diferencia maiúsculas nem espaços nas pontas; a senha diferencia", () => {
+    expect(credenciaisCorretas("  COACH@exemplo.COM.BR ", "senha-de-teste")).toBe(true);
+    expect(credenciaisCorretas("coach@exemplo.com.br", "SENHA-DE-TESTE")).toBe(false);
+  });
+
+  it("sem ADMIN_EMAIL ou sem ADMIN_PASSWORD, o painel fica desativado", () => {
+    delete process.env.ADMIN_EMAIL;
+    expect(painelConfigurado()).toBe(false);
+    expect(credenciaisCorretas("coach@exemplo.com.br", "senha-de-teste")).toBe(false);
     expect(tokenValido("123.abc")).toBe(false);
+    process.env.ADMIN_EMAIL = "coach@exemplo.com.br";
+    delete process.env.ADMIN_PASSWORD;
+    expect(painelConfigurado()).toBe(false);
   });
 
   it("aceita o token criado e recusa depois de expirar", () => {
@@ -39,9 +50,13 @@ describe("sessão do painel", () => {
     expect(tokenValido(undefined)).toBe(false);
   });
 
-  it("trocar a senha invalida as sessões abertas", () => {
+  it("trocar a senha ou o e-mail invalida as sessões abertas", () => {
     const token = criarToken();
     process.env.ADMIN_PASSWORD = "nova-senha";
+    expect(tokenValido(token)).toBe(false);
+    process.env.ADMIN_PASSWORD = "senha-de-teste";
+    expect(tokenValido(token)).toBe(true);
+    process.env.ADMIN_EMAIL = "nova@exemplo.com.br";
     expect(tokenValido(token)).toBe(false);
   });
 });

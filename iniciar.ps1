@@ -22,7 +22,16 @@ function Test-PortaLivre {
   }
 }
 
-function Initialize-SenhaPainel($arquivo) {
+function Initialize-AcessoPainel($arquivo) {
+  $existe = Test-Path $arquivo
+  if ($existe -and (Select-String -Path $arquivo -Pattern "^ADMIN_EMAIL=.+" -Quiet)) {
+    $email = ((Select-String -Path $arquivo -Pattern "^ADMIN_EMAIL=(.+)").Matches[0].Groups[1].Value).Trim()
+    Write-Host "    E-mail do painel: $email"
+  } else {
+    $email = "admin@coach.local"
+    Add-Content -Path $arquivo -Value "ADMIN_EMAIL=$email" -Encoding ascii
+    Write-Host "    E-mail do painel criado em ${arquivo}: $email" -ForegroundColor Yellow
+  }
   if ((Test-Path $arquivo) -and (Select-String -Path $arquivo -Pattern "^ADMIN_PASSWORD=.+" -Quiet)) {
     Write-Host "    Senha do painel definida em $arquivo"
     return
@@ -55,7 +64,7 @@ if ($Docker) {
     exit 1
   }
   Test-PortaLivre
-  Initialize-SenhaPainel ".env"
+  Initialize-AcessoPainel ".env"
   Etapa "Subindo em http://localhost:3010 (painel: /admin) (Ctrl+C para parar)"
   Executar "docker compose up --build"
   exit 0
@@ -73,7 +82,7 @@ if ([int]($versao.Split(".")[0]) -lt 20) {
 }
 Write-Host "    Node $versao"
 Test-PortaLivre
-Initialize-SenhaPainel ".env.local"
+Initialize-AcessoPainel ".env.local"
 
 Etapa "Instalando dependencias (ativa tambem o hook do husky)"
 if ((Test-Path "package-lock.json") -and -not (Test-Path "node_modules")) { Executar "npm ci" } else { Executar "npm install" }
