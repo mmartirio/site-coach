@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepare": "cd .. && husky SITE-COACH/.husky"
+    "prepare": "husky"
   },
   "dependencies": {
     "lucide-react": "^1.70.0",
