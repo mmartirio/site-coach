@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="g" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a2a4a"/>
+      <stop offset="1" stop-color="#c97b84"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#g)"/>
+  <circle cx="110" cy="70" r="110" fill="#fff" opacity=".1"/>
+  <circle cx="560" cy="300" r="100" fill="#fff" opacity=".12"/>
+  <text x="50%" y="52%" text-anchor="middle" font-family="Georgia, serif" font-size="44" fill="#fff">Palestra</text>
+  <text x="50%" y="66%" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="#fff" opacity=".85">Produtividade sem Ansiedade</text>
+</svg>
