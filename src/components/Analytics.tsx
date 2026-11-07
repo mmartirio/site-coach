@@ -14,7 +14,6 @@ export const CHAVE_CONSENTIMENTO = "consentimento-analytics";
 const EVENTO_ABRIR = "abrir-preferencias-cookies";
 type Escolha = "aceito" | "recusado";
 
-/** Remove os cookies do Google Analytics (_ga, _ga_XXXX) ao recusar. */
 function apagarCookiesGa() {
   const dominios = ["", location.hostname, `.${location.hostname.replace(/^www\./, "")}`];
   for (const c of document.cookie.split(";")) {
@@ -24,7 +23,6 @@ function apagarCookiesGa() {
   }
 }
 
-/** Registra no GA os cliques que importam para a coach: WhatsApp, e-mail e inscrições em eventos. */
 function registrarClique(e: MouseEvent) {
   const a = (e.target as Element | null)?.closest?.("a");
   if (!a || !window.gtag) return;
@@ -35,12 +33,7 @@ function registrarClique(e: MouseEvent) {
   else if (a.classList.contains("evento--link")) window.gtag("event", "select_content", { content_type: "inscricao", item_id: texto, link_url: href });
 }
 
-/**
- * Google Analytics 4 só depois do consentimento (LGPD): até a pessoa aceitar, nenhum script ou cookie
- * do Google é carregado — o que também mantém a página leve no PageSpeed.
- */
 export function Analytics({ id }: { id: string }) {
-  // undefined = ainda lendo o localStorage (evita piscar o aviso); null = não escolheu
   const [escolha, setEscolha] = useState<Escolha | null | undefined>(undefined);
 
   useEffect(() => {
@@ -63,7 +56,7 @@ export function Analytics({ id }: { id: string }) {
     setEscolha(nova);
     if (nova === "recusado") {
       apagarCookiesGa();
-      if (tinhaAceitado) location.reload(); // descarrega o script que já estava rodando
+      if (tinhaAceitado) location.reload();
     }
   }
 
@@ -96,7 +89,6 @@ export function Analytics({ id }: { id: string }) {
   );
 }
 
-/** Link do rodapé para rever a escolha de cookies. */
 export function BotaoCookies() {
   return (
     <button type="button" className="footer__cookies" onClick={() => window.dispatchEvent(new Event(EVENTO_ABRIR))}>

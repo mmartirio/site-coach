@@ -1,4 +1,3 @@
-/** Linha em branco separa parágrafos; quebra simples vira <br>. */
 export function Paragrafos({ texto, className }: { texto: string; className?: string }) {
   const blocos = texto.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
   return (

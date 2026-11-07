@@ -54,7 +54,6 @@ export function Editor({ inicial }: { inicial: Site }) {
     });
   }
 
-  // Avisa antes de sair com alterações não salvas; Ctrl+S salva.
   useEffect(() => {
     const aoSair = (e: BeforeUnloadEvent) => {
       if (sujo) e.preventDefault();
@@ -72,7 +71,6 @@ export function Editor({ inicial }: { inicial: Site }) {
       window.removeEventListener("keydown", atalho);
     };
   });
-
 
   return (
     <div className="adm-painel">
@@ -130,8 +128,6 @@ export function Editor({ inicial }: { inicial: Site }) {
   );
 }
 
-/* ---------------- Aparência ---------------- */
-
 const CORES: { chave: keyof Tema; nome: string }[] = [
   { chave: "corPrimaria", nome: "Cor principal (botões, títulos)" },
   { chave: "corPrimariaEscura", nome: "Cor principal escura" },
@@ -163,7 +159,6 @@ function AbaAparencia({ tema, editar }: { tema: Tema; editar: Editar }) {
                 aria-pressed={ativo?.id === t.id}
                 onClick={() => editar((s) => void (s.tema = aplicarTema(s.tema, t)))}
               >
-                {/* miniatura: fundo da página com um "card" e um "botão" do tema */}
                 <span className="adm-tema__amostra" style={{ background: t.cores.corFundo }}>
                   <span className="adm-tema__card" style={{ background: t.cores.corCartao, borderColor: `${t.cores.corPrimaria}33` }}>
                     <span style={{ background: t.cores.corTitulos }} />
@@ -210,8 +205,6 @@ function AbaAparencia({ tema, editar }: { tema: Tema; editar: Editar }) {
   );
 }
 
-/* ---------------- Informações ---------------- */
-
 function AbaInfo({ site, editar }: { site: Site; editar: Editar }) {
   const { info } = site;
   const campo = (k: keyof Site["info"]) => (v: string) => editar((s) => void (s.info[k] = v));
@@ -247,7 +240,6 @@ function AbaInfo({ site, editar }: { site: Site; editar: Editar }) {
   );
 }
 
-/** Extrai o código de uma meta tag colada inteira (<meta name="google-site-verification" content="...">). */
 function codigoDeVerificacao(v: string) {
   const meta = v.match(/content\s*=\s*["']([^"']+)["']/i);
   return (meta ? meta[1] : v).trim();
@@ -293,8 +285,6 @@ function CamposGoogle({ site, editar }: { site: Site; editar: Editar }) {
   );
 }
 
-/* ---------------- Topo ---------------- */
-
 function CamposTopo({ site, editar }: { site: Site; editar: Editar }) {
   const { topo } = site;
   const campo = (k: Exclude<keyof Site["topo"], "blocos">) => (v: string) => editar((s) => void (s.topo[k] = v));
@@ -309,8 +299,6 @@ function CamposTopo({ site, editar }: { site: Site; editar: Editar }) {
     </>
   );
 }
-
-/* ---------------- Seções ---------------- */
 
 const TIPOS: { tipo: TipoSecao; descricao: string }[] = [
   { tipo: "texto", descricao: "Título, texto e uma foto (ex.: Sobre mim)" },
@@ -330,7 +318,6 @@ const CONTAGEM: Partial<Record<TipoSecao, [string, string]>> = {
   galeria: ["foto", "fotos"],
 };
 
-/** Botões "+ Adicionar ..." de cada tipo de seção com lista. */
 function acoesDeAdicionar(tipo: TipoSecao): { rotulo: string; criar: () => Item }[] {
   switch (tipo) {
     case "eventos":
@@ -521,7 +508,6 @@ function EditorSecao({
   aoAdicionar: (item: Item) => void;
   aoDestacar: (id: string) => void;
 }) {
-  // Atalho para campos de texto específicos de cada tipo.
   const texto = (k: string) => (v: string) => editarSecao((s) => void ((s as unknown as Record<string, string>)[k] = v));
   const valor = (k: string) => (secao as unknown as Record<string, string>)[k] ?? "";
 
@@ -617,7 +603,6 @@ function EditorSecao({
 
 const NOME_ITEM: Partial<Record<TipoSecao, string>> = { cards: "Card", etapas: "Etapa", galeria: "Foto" };
 
-/** Rola até o item recém-criado e destaca por alguns segundos. */
 function useDestaque(ativo: boolean) {
   const ref = useRef<HTMLFieldSetElement>(null);
   useEffect(() => {
@@ -755,7 +740,6 @@ function EditorItens({
 
 const TIPOS_BLOCO: TipoBloco[] = ["subtitulo", "texto", "imagem", "botao"];
 
-/** Subtítulos, textos e imagens extras de uma seção. */
 function EditorBlocos({
   blocos,
   editarBlocos,
@@ -847,7 +831,6 @@ function EditorBlocos({
   );
 }
 
-/** Texto do botão e destino: WhatsApp (com mensagem pronta) ou link. */
 function CamposDestino({
   texto,
   destino,
@@ -893,7 +876,6 @@ function CamposDestino({
   );
 }
 
-/** Seleciona várias fotos de uma vez e envia uma a uma. */
 function EnviarFotos({ aoEnviar }: { aoEnviar: (urls: string[]) => void }) {
   const [progresso, setProgresso] = useState<string | null>(null);
   const [erros, setErros] = useState<string[]>([]);

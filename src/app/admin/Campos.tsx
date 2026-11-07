@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 import { useState, type ReactNode } from "react";
 import { Icone, ICONES } from "@/lib/icones";
 import { TAMANHO_MAXIMO_IMAGEM } from "@/lib/imagens";
@@ -44,7 +43,6 @@ export function CampoCor({ rotulo, valor, onChange }: Omit<Basico, "dica" | "pla
   );
 }
 
-/** Envia uma imagem para /api/admin/upload. Retorna a URL ou a mensagem de erro. */
 export async function enviarImagem(arquivo: File): Promise<{ url: string } | { erro: string }> {
   if (arquivo.size > TAMANHO_MAXIMO_IMAGEM) return { erro: `"${arquivo.name}" é maior que 5 MB.` };
   try {
@@ -100,7 +98,6 @@ export function CampoImagem({ rotulo, valor, onChange }: Omit<Basico, "dica" | "
 
 const normalizar = (t: string) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-/** Escolha de um ícone Lucide: mostra o atual e abre uma grade com busca. */
 export function SeletorIcone({ valor, onChange }: { valor: string; onChange: (v: string) => void }) {
   const [aberto, setAberto] = useState(false);
   const [busca, setBusca] = useState("");

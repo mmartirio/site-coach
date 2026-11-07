@@ -1,4 +1,3 @@
-/* As cores e fontes vêm do painel (variáveis aplicadas no <html>). Estes são só os valores de reserva. */
 :root {
   --cor-primaria: #7a3e65;
   --cor-primaria-escura: #5a2a4a;
@@ -31,7 +30,6 @@ p + p { margin-top: 1rem; }
 
 .container { width: min(1100px, 100% - 2.5rem); margin-inline: auto; }
 
-/* ---- Cabeçalho ---- */
 .header {
   position: sticky; top: 0; z-index: 10;
   background: color-mix(in srgb, var(--cor-fundo) 92%, transparent);
@@ -43,7 +41,6 @@ p + p { margin-top: 1rem; }
 .header nav { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem 1.5rem; font-size: 0.95rem; }
 .header nav a:not(.btn):hover { color: var(--cor-primaria); }
 
-/* ---- Botões ---- */
 .btn {
   display: inline-block; padding: 0.85rem 1.6rem; border-radius: 999px;
   background: var(--cor-primaria); color: var(--cor-texto-botao); font-weight: 600;
@@ -60,7 +57,6 @@ p + p { margin-top: 1rem; }
 .btn--ghost-light:hover { background: color-mix(in srgb, var(--cor-texto-botao) 12%, transparent); border-color: var(--cor-texto-botao); }
 .acoes { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
 
-/* ---- Topo ---- */
 .hero {
   padding: clamp(4rem, 12vw, 8rem) 0;
   background: radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--cor-destaque) 40%, transparent) 0, transparent 45%), var(--cor-fundo);
@@ -71,7 +67,6 @@ p + p { margin-top: 1rem; }
 .hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); max-width: 16ch; margin: 0.75rem 0 1.25rem; }
 .hero__lead { font-size: 1.15rem; color: var(--cor-suave); max-width: 52ch; }
 
-/* ---- Seções ---- */
 .section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
 .section--alt { background: var(--cor-fundo-alt); }
 .section--cta { background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-escura)); color: var(--cor-texto-botao); }
@@ -79,7 +74,6 @@ p + p { margin-top: 1rem; }
 .section--cta .secao__intro { color: color-mix(in srgb, var(--cor-texto-botao) 85%, transparent); }
 .secao__intro { color: var(--cor-suave); max-width: 65ch; margin: -0.75rem 0 2rem; }
 
-/* Blocos extras (subtítulo, texto, imagem) */
 .blocos { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
 .blocos > :not(.bloco-imagem--larga) { max-width: 760px; width: 100%; }
 .blocos--depois { margin-top: 2rem; }
@@ -100,13 +94,11 @@ p + p { margin-top: 1rem; }
   background: transparent; color: var(--cor-texto-botao); border-color: color-mix(in srgb, var(--cor-texto-botao) 60%, transparent);
 }
 
-/* Texto + imagem */
 .texto-imagem { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center; }
 .texto-imagem--sem-imagem { grid-template-columns: 1fr; max-width: 760px; }
 .texto-imagem--direita > :first-child { order: 2; }
 .texto-imagem__foto { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; }
 
-/* Cards */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
 .card {
   background: var(--cor-cartao); color: var(--cor-texto); border-radius: var(--raio); padding: 2rem;
@@ -125,7 +117,6 @@ p + p { margin-top: 1rem; }
 .card ul { margin-top: 1.25rem; padding-left: 1.2rem; display: grid; gap: 0.4rem; }
 .card li::marker { color: var(--cor-destaque); }
 
-/* Eventos */
 .eventos { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; }
 .evento {
   display: flex; flex-direction: column; overflow: hidden;
@@ -165,7 +156,6 @@ p + p { margin-top: 1rem; }
 .evento__acao { margin-left: auto; font-weight: 700; color: var(--cor-primaria); }
 .evento__acao--off { color: var(--cor-suave); font-weight: 600; }
 
-/* Galeria */
 .galeria { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; }
 .galeria__item {
   position: relative; display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in; overflow: hidden;
@@ -202,7 +192,6 @@ p + p { margin-top: 1rem; }
   .galeria__seta { top: auto; bottom: 1rem; translate: none; }
 }
 
-/* Etapas */
 .etapas {
   list-style: none; padding: 0; counter-reset: etapa;
   display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
@@ -213,19 +202,16 @@ p + p { margin-top: 1rem; }
 .etapas p { color: var(--cor-suave); }
 .section--cta .etapas p { color: color-mix(in srgb, var(--cor-texto-botao) 85%, transparent); }
 
-/* Contato */
 .contato { text-align: center; }
 .contato h2 { margin-bottom: 0.5rem; }
 .contato .acoes { justify-content: center; }
 
-/* ---- Rodapé ---- */
 .footer { padding: 1.5rem 0; font-size: 0.9rem; color: var(--cor-suave); }
 .footer__inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
 .footer a:hover, .footer__cookies:hover { color: var(--cor-primaria); }
 .footer__links { display: inline-flex; gap: 1.25rem; flex-wrap: wrap; }
 .footer__cookies { border: 0; padding: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 
-/* ---- Aviso de cookies (LGPD) ---- */
 .cookies {
   position: fixed; z-index: 50; left: 1rem; right: 1rem; bottom: 1rem; margin-inline: auto; max-width: 640px;
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; padding: 1rem 1.25rem;

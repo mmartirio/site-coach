@@ -9,7 +9,6 @@ type Props<T extends Secao["tipo"]> = { secao: Extract<Secao, { tipo: T }>; site
 
 const CLASSE_FUNDO = { claro: "", suave: "section--alt", destaque: "section--cta" } as const;
 
-/** Blocos extras (subtítulo, texto, imagem) colocados pela coach acima ou abaixo do conteúdo. */
 export function Blocos({ blocos, whatsapp }: { blocos: Bloco[]; whatsapp: string }) {
   if (blocos.length === 0) return null;
   return (
@@ -47,7 +46,6 @@ export function Blocos({ blocos, whatsapp }: { blocos: Bloco[]; whatsapp: string
   );
 }
 
-/** Título da seção, blocos marcados como "acima do conteúdo" e a introdução. */
 function Cabecalho({ secao, site, introducao }: { secao: Secao; site: Site; introducao?: string }) {
   return (
     <>
@@ -99,7 +97,6 @@ function SecaoCards({ secao, site }: Props<"cards">) {
   );
 }
 
-/** Card que, com link, vira um <a> inteiro clicável (abre em nova aba se for externo). */
 function CardClicavel({ link, rotulo, className, children }: { link: string; rotulo: string; className: string; children: React.ReactNode }) {
   if (!link) return <article className={className}>{children}</article>;
   const externo = linkExterno(link);
@@ -117,7 +114,6 @@ function CardClicavel({ link, rotulo, className, children }: { link: string; rot
 
 const NOME_FORMATO = { palestra: "Palestra", treinamento: "Treinamento" } as const;
 
-/** Card de palestra ou treinamento. Com link, o card inteiro leva à página de inscrição. */
 function CardEvento({ item: ev, acao }: { item: Item; acao: string }) {
   const topicos = ev.lista.filter((l) => l.trim());
   return (

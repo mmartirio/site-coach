@@ -19,10 +19,8 @@ describe("blocos extras dentro de seções existentes", () => {
     const subtitulo = within(el).getByRole("heading", { name: "Agenda 2027", level: 3 });
     const primeiroCard = el.querySelector(".evento")!;
     const texto = within(el).getByText("Turmas também in company.");
-    // ordem no documento: título → subtítulo → cards → texto/imagem
     expect(subtitulo.compareDocumentPosition(primeiroCard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(primeiroCard.compareDocumentPosition(texto) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    // passa pelo otimizador de imagens do Next
     expect(within(el).getByRole("img", { name: "Palestra em SP" }).getAttribute("src")).toContain("url=%2Fuploads%2Fpalco.jpg");
     expect(within(el).getByText("Palestra em SP", { selector: "figcaption" })).toBeInTheDocument();
   });

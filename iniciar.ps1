@@ -1,17 +1,3 @@
-<#
-.SYNOPSIS
-  Inicializa o projeto Site Coach.
-
-.DESCRIPTION
-  Sem parametros: confere o Node, instala dependencias (ativando o husky),
-  roda typecheck + testes e sobe o servidor de desenvolvimento.
-
-.EXAMPLE
-  .\iniciar.ps1              # instala, testa e roda "npm run dev"
-  .\iniciar.ps1 -SemTestes   # pula typecheck e testes
-  .\iniciar.ps1 -Producao    # build de producao + "npm start"
-  .\iniciar.ps1 -Docker      # sobe via docker compose
-#>
 param(
   [switch]$SemTestes,
   [switch]$Producao,
@@ -23,7 +9,6 @@ Set-Location -Path $PSScriptRoot
 
 function Etapa($msg) { Write-Host "`n==> $msg" -ForegroundColor Cyan }
 
-# Porta fixa do site (a 3000 costuma estar com outros projetos). Mesma de package.json e docker-compose.yml.
 $Porta = 3010
 
 function Test-PortaLivre {
@@ -37,7 +22,6 @@ function Test-PortaLivre {
   }
 }
 
-# Garante que existe uma senha para o painel (/admin). Cria o arquivo com senha aleatoria se faltar.
 function Initialize-SenhaPainel($arquivo) {
   if ((Test-Path $arquivo) -and (Select-String -Path $arquivo -Pattern "^ADMIN_PASSWORD=.+" -Quiet)) {
     Write-Host "    Senha do painel definida em $arquivo"
@@ -92,7 +76,6 @@ Test-PortaLivre
 Initialize-SenhaPainel ".env.local"
 
 Etapa "Instalando dependencias (ativa tambem o hook do husky)"
-# Primeira vez: "npm ci" (instalacao limpa e fiel ao lock). Depois: "npm install", que e incremental.
 if ((Test-Path "package-lock.json") -and -not (Test-Path "node_modules")) { Executar "npm ci" } else { Executar "npm install" }
 
 if (-not $SemTestes) {

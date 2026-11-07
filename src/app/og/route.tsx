@@ -3,8 +3,6 @@ import { lerSite } from "@/lib/armazenamento";
 
 export const dynamic = "force-dynamic";
 
-// Imagem de compartilhamento (1200×630) gerada com o nome, o título e as cores do tema.
-// Usada quando o painel não tem imagem de compartilhamento nem foto no topo.
 export async function GET() {
   const { info, topo, tema } = await lerSite();
   return new ImageResponse(

@@ -7,7 +7,6 @@ const config: Config = {
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: { "^@/(.*)$": "<rootDir>/src/$1" },
-  // O build (.next/standalone) tem uma cópia do package.json que confunde o Jest.
   modulePathIgnorePatterns: ["<rootDir>/.next/"],
 };
 

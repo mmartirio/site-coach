@@ -3,13 +3,6 @@ import type { Tema } from "./schema";
 export type Cores = Omit<Tema, "fonteTitulos" | "fonteTexto">;
 export type TemaPronto = { id: string; nome: string; escuro: boolean; cores: Cores };
 
-/*
- * Regras de contraste (conferidas em __tests__/temas.test.ts):
- * - "texto dos botões" legível sobre a cor principal e a principal escura (botões e faixa de contato);
- * - texto, texto secundário e títulos legíveis sobre os fundos e sobre os cards;
- * - a cor principal legível sobre o fundo e os cards (links, selos, rótulos).
- * Nos temas escuros a cor principal é clara, por isso o texto dos botões é escuro.
- */
 export const TEMAS: TemaPronto[] = [
   {
     id: "ameixa",
@@ -84,7 +77,6 @@ export const TEMAS: TemaPronto[] = [
     },
   },
 
-  // ---- Escuros
   {
     id: "noite-ameixa",
     nome: "Noite ameixa",
@@ -116,12 +108,10 @@ export const TEMAS: TemaPronto[] = [
 
 const CHAVES_CORES = Object.keys(TEMAS[0].cores) as (keyof Cores)[];
 
-/** Tema pronto cujas cores batem exatamente com as atuais (ou null, se foram personalizadas). */
 export function temaAtivo(tema: Tema): TemaPronto | null {
   return TEMAS.find((t) => CHAVES_CORES.every((k) => t.cores[k].toLowerCase() === tema[k].toLowerCase())) ?? null;
 }
 
-/** Aplica as cores de um tema pronto, mantendo as fontes escolhidas. */
 export function aplicarTema(tema: Tema, pronto: TemaPronto): Tema {
   return { ...tema, ...pronto.cores };
 }

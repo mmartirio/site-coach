@@ -1,5 +1,3 @@
-// Fontes disponíveis no painel (só nomes e chaves; o carregamento fica em fontes-carregadas.ts).
-// A chave é o que fica salvo no site.json.
 export const FONTES = {
   "georgia": { nome: "Georgia (sem download)" },
   "sistema": { nome: "Fonte do sistema (sem download)" },

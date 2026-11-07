@@ -4,7 +4,6 @@ import { Imagem } from "./Imagem";
 import { Paragrafos } from "./Paragrafos";
 import { Blocos, SecaoView } from "./Secoes";
 
-/** rodapeExtra: conteúdo extra no rodapé (ex.: link de preferências de cookies, só no site público). */
 export function SiteView({ site, rodapeExtra }: { site: Site; rodapeExtra?: React.ReactNode }) {
   const secoes = site.secoes.filter((s) => s.visivel);
   const menu = secoes.filter((s) => s.noMenu && s.titulo);

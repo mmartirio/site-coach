@@ -5,19 +5,16 @@ const cor = z.string().regex(/^#[0-9a-fA-F]{6}$/, "Cor inválida (use o formato 
 const txt = (max: number) => z.string().max(max, `Texto muito longo (máx. ${max} caracteres)`);
 const id = z.string().regex(/^[a-z0-9-]{1,40}$/, "Identificador inválido");
 
-// Só aceitamos imagens enviadas pelo painel, imagens do próprio site ou https.
 export const REGEX_IMAGEM = /^(\/uploads\/[a-z0-9-]+\.(png|jpe?g|webp|gif)|\/imagens\/[a-z0-9-]+\.(svg|png|jpe?g|webp)|https:\/\/[^\s"'<>]+)$/;
 const imagem = z.string().max(500).refine((v) => v === "" || REGEX_IMAGEM.test(v), "Endereço de imagem inválido");
 const link = z
   .string()
   .max(500)
-  // Externo (http/https) ou caminho interno "/..." — "//" e "/\" são recusados porque o navegador os trata como outro site.
   .refine(
     (v) => v === "" || /^https?:\/\/[^\s"'<>]+$/.test(v) || /^\/(?![/\\])[^\s"'<>\\]*$/.test(v) || /^#[a-z0-9-]+$/i.test(v),
     "Link inválido (use https://... ou #secao)",
   );
 
-/** Preenche as cores que não existiam nos site.json antigos, mantendo o visual de antes. */
 function completarTema(v: unknown) {
   if (!v || typeof v !== "object") return v;
   const t = v as Record<string, unknown>;
@@ -49,15 +46,12 @@ export const itemSchema = z.object({
   data: txt(100),
   local: txt(150),
   link,
-  // Campos de palestras/treinamentos. Os .default/.catch mantêm válidos os site.json salvos antes deles.
   formato: z.enum(["palestra", "treinamento"]).catch("palestra"),
   duracao: txt(100).default(""),
   preco: txt(60).default(""),
 });
 
-// Blocos extras que podem ser colocados em qualquer seção, acima ou abaixo do conteúdo dela.
 const posicao = z.enum(["antes", "depois"]).catch("depois");
-// Para onde um botão leva: WhatsApp (com mensagem pronta) ou um link.
 const destino = z.enum(["whatsapp", "link"]).catch("whatsapp");
 export const blocoSchema = z.discriminatedUnion("tipo", [
   z.object({ id, tipo: z.literal("subtitulo"), texto: txt(200), posicao }),
@@ -81,7 +75,6 @@ const base = {
   visivel: z.boolean(),
   noMenu: z.boolean(),
   fundo: z.enum(["claro", "suave", "destaque"]),
-  // .default([]) mantém válidos os site.json salvos antes dos blocos existirem.
   blocos: z.array(blocoSchema).max(30).default([]),
 };
 
@@ -105,15 +98,10 @@ export const secaoSchema = z.discriminatedUnion("tipo", [
   z.object({ ...base, tipo: z.literal("contato"), texto: txt(1000), botaoTexto: txt(60), mensagemWhatsapp: txt(300) }),
 ]);
 
-// SEO e Google. Campos vazios = recurso desligado.
 export const seoSchema = z.object({
-  /** Endereço público do site (https://...), usado no sitemap, no link canônico e no compartilhamento. */
   urlSite: z.string().max(200).refine((v) => v === "" || /^https?:\/\/[a-z0-9.-]+(:\d+)?\/?$/i.test(v), "Endereço do site inválido (ex.: https://www.seusite.com.br)"),
-  /** Código da meta tag google-site-verification do Search Console. */
   googleVerificacao: z.string().regex(/^[A-Za-z0-9_-]{0,100}$/, "Código de verificação do Google inválido"),
-  /** ID de medição do Google Analytics 4. */
   googleAnalyticsId: z.string().regex(/^(G-[A-Z0-9]{4,20})?$/, "ID do Google Analytics inválido (formato G-XXXXXXXXXX)"),
-  /** Imagem que aparece ao compartilhar o link (WhatsApp, redes sociais). */
   imagemCompartilhamento: imagem,
 });
 export const SEO_VAZIO = { urlSite: "", googleVerificacao: "", googleAnalyticsId: "", imagemCompartilhamento: "" };

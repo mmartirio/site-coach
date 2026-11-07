@@ -8,7 +8,6 @@ export const TIPOS_IMAGEM = {
 } as const;
 export type ExtensaoImagem = keyof typeof TIPOS_IMAGEM;
 
-/** Identifica o formato pelos primeiros bytes (não confia no nome nem no tipo enviado pelo navegador). */
 export function detectarTipoImagem(b: Uint8Array): ExtensaoImagem | null {
   const ascii = (ini: number, fim: number) => String.fromCharCode(...b.slice(ini, fim));
   if (b.length >= 8 && b[0] === 0x89 && ascii(1, 4) === "PNG") return "png";

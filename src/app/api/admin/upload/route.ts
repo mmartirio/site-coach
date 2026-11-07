@@ -19,7 +19,6 @@ export async function POST(req: Request) {
 
   const nome = `${randomUUID()}.${ext}`;
   await fs.mkdir(DIR_UPLOADS, { recursive: true });
-  // A pasta de dados existe só em tempo de execução; o comentário evita que o build tente rastreá-la.
   await fs.writeFile(path.join(/*turbopackIgnore: true*/ DIR_UPLOADS, nome), bytes);
   return Response.json({ url: `/uploads/${nome}` });
 }

@@ -4,7 +4,6 @@ import { Imagem } from "./Imagem";
 
 export type Foto = { id: string; src: string; legenda: string };
 
-/** Grade de fotos; clicar abre a foto em tela cheia, com setas (e teclado) para navegar. */
 export function Galeria({ fotos }: { fotos: Foto[] }) {
   const [aberta, setAberta] = useState<number | null>(null);
   const dialogo = useRef<HTMLDialogElement>(null);

@@ -3,7 +3,6 @@ import { SiteView } from "@/components/site/SiteView";
 import { lerSite } from "@/lib/armazenamento";
 import { dadosEstruturados, jsonLd, urlBase } from "@/lib/seo";
 
-// O conteúdo vem do painel (data/site.json), então a página é montada a cada acesso.
 export const dynamic = "force-dynamic";
 
 export default async function Home() {

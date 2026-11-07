@@ -5,8 +5,6 @@ import {
   Sun, Target, TrendingUp, Trophy, User, Users, Video, Zap, type LucideIcon,
 } from "lucide-react";
 
-// Ícones Lucide disponíveis no painel. Importados um a um para não levar a biblioteca inteira ao navegador.
-// A chave é o que fica salvo no site.json; "nome" e "busca" aparecem no seletor do painel.
 export const ICONES: Record<string, { Icone: LucideIcon; nome: string; busca?: string }> = {
   brain: { Icone: Brain, nome: "Mente", busca: "cérebro pensamento autoconhecimento" },
   target: { Icone: Target, nome: "Alvo", busca: "meta objetivo foco" },
@@ -60,7 +58,6 @@ export const ICONES: Record<string, { Icone: LucideIcon; nome: string; busca?: s
   coffee: { Icone: Coffee, nome: "Café", busca: "conversa bate-papo" },
 };
 
-// Emojis usados antes dos ícones Lucide: conteúdo salvo com eles continua aparecendo com o ícone equivalente.
 const EMOJI_PARA_ICONE: Record<string, string> = {
   "🧠": "brain", "🎯": "target", "✨": "sparkles", "💬": "message-circle", "❤️": "heart", "🚀": "rocket",
   "💡": "lightbulb", "🏆": "trophy", "⭐": "star", "📚": "book-open", "🎓": "graduation-cap", "🎤": "mic", "🤝": "handshake",
@@ -71,7 +68,6 @@ export function iconePorNome(nome: string): LucideIcon | null {
   return chave ? ICONES[chave].Icone : null;
 }
 
-/** Ícone Lucide pelo nome salvo. Valores desconhecidos (ex.: um emoji antigo) aparecem como texto. */
 export function Icone({ nome, className, tamanho = 28 }: { nome: string; className?: string; tamanho?: number }) {
   const Comp = iconePorNome(nome);
   if (Comp) return <Comp className={className} size={tamanho} strokeWidth={1.75} aria-hidden="true" />;

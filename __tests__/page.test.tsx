@@ -12,7 +12,6 @@ describe("SiteView", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/clareza para decidir/i);
     const servicos = document.getElementById("servicos")!;
     expect(within(servicos).getByRole("heading", { name: "Coach Pessoal e Profissional" })).toBeInTheDocument();
-    // ícones Lucide (svg), não emojis
     expect(servicos.querySelector(".card__icone svg.lucide-brain")).not.toBeNull();
     expect(servicos.querySelector(".card__icone svg.lucide-target")).not.toBeNull();
   });
@@ -71,7 +70,6 @@ describe("Seção de eventos (Treinamentos e Palestras)", () => {
     expect(link).toHaveAttribute("href", "https://exemplo.com/inscricao");
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    // a imagem e a descrição ficam dentro do link
     expect(link.querySelector("img")).not.toBeNull();
     expect(within(link).getByText(ev.texto)).toBeInTheDocument();
   });

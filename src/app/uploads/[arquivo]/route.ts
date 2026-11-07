@@ -3,7 +3,6 @@ import path from "node:path";
 import { DIR_UPLOADS } from "@/lib/armazenamento";
 import { REGEX_ARQUIVO_UPLOAD, TIPOS_IMAGEM, type ExtensaoImagem } from "@/lib/imagens";
 
-// Serve as imagens enviadas pelo painel (ficam em data/uploads, fora de /public).
 export async function GET(_req: Request, { params }: { params: Promise<{ arquivo: string }> }) {
   const { arquivo } = await params;
   if (!REGEX_ARQUIVO_UPLOAD.test(arquivo)) return new Response("Não encontrado", { status: 404 });

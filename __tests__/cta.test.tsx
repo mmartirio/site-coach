@@ -15,7 +15,7 @@ describe("CTA", () => {
     expect(principal).toHaveAttribute("target", "_blank");
     const secundario = within(cta).getByRole("link", { name: "Ver serviços" });
     expect(secundario).toHaveAttribute("href", "#servicos");
-    expect(secundario).not.toHaveAttribute("target"); // link interno não abre nova aba
+    expect(secundario).not.toHaveAttribute("target");
   });
 
   it("botão principal pode levar a um link", () => {

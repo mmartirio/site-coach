@@ -5,7 +5,6 @@ export const DURACAO_SESSAO_MS = 7 * 24 * 60 * 60 * 1000;
 
 const sha256 = (v: string) => createHash("sha256").update(v).digest();
 
-/** Segredo para assinar a sessão. Sem SESSION_SECRET, deriva da senha (trocar a senha derruba as sessões). */
 function segredo(): string | null {
   if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
   if (process.env.ADMIN_PASSWORD) return sha256(`sessao:${process.env.ADMIN_PASSWORD}`).toString("hex");

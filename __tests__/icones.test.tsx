@@ -31,7 +31,7 @@ describe("ícones Lucide", () => {
     const site: Site = structuredClone(conteudoPadrao);
     const s = site.secoes.find((x) => x.id === "treinamentos-e-palestras");
     if (!s || s.tipo !== "eventos") throw new Error();
-    s.itens[0].imagem = ""; // sem imagem: mostra o ícone no lugar
+    s.itens[0].imagem = "";
     render(<SiteView site={site} />);
     const el = document.getElementById("treinamentos-e-palestras")!;
     expect(el.querySelector(".evento__meta svg.lucide-calendar")).not.toBeNull();

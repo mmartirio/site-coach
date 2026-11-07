@@ -8,13 +8,12 @@ import { salvarSite } from "@/lib/armazenamento";
 import { siteSchema } from "@/lib/schema";
 import { COOKIE_SESSAO, criarToken, DURACAO_SESSAO_MS, senhaCorreta } from "@/lib/sessao";
 
-// Em produção o cookie só trafega por HTTPS. Para testar o Docker via http num IP da rede, use COOKIE_SECURE=false.
 const cookieSeguro = () => process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== "false";
 
 export async function entrar(formData: FormData) {
   const senha = String(formData.get("senha") ?? "");
   if (!senhaCorreta(senha)) {
-    await new Promise((r) => setTimeout(r, 1000)); // atrasa tentativas de adivinhar a senha
+    await new Promise((r) => setTimeout(r, 1000));
     redirect("/admin/login?erro=1");
   }
   (await cookies()).set(COOKIE_SESSAO, criarToken(), {

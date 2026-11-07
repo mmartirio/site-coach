@@ -29,7 +29,6 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [{ url: imagem, width: 1200, height: 630, alt: titulo }],
     },
     twitter: { card: "summary_large_image", title: titulo, description: info.descricao, images: [imagem] },
-    // Search Console: meta tag google-site-verification
     verification: seo.googleVerificacao ? { google: seo.googleVerificacao } : undefined,
   };
 }

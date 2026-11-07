@@ -2,7 +2,6 @@ import { conteudoPadrao } from "@/lib/conteudo-padrao";
 import { siteSchema, temaSchema } from "@/lib/schema";
 import { aplicarTema, TEMAS, temaAtivo } from "@/lib/temas";
 
-/** Contraste WCAG entre duas cores #rrggbb. */
 function contraste(a: string, b: string) {
   const lum = (hex: string) => {
     const [r, g, bl] = [1, 3, 5].map((i) => {
@@ -19,10 +18,8 @@ describe("temas de cores", () => {
   it.each(TEMAS.map((t) => [t.nome, t] as const))("%s é válido e legível", (_, t) => {
     const c = t.cores;
     expect(temaSchema.safeParse({ ...c, fonteTitulos: "georgia", fonteTexto: "sistema" }).success).toBe(true);
-    // botões e faixa de contato
     expect(contraste(c.corTextoBotao, c.corPrimaria)).toBeGreaterThanOrEqual(4.5);
     expect(contraste(c.corTextoBotao, c.corPrimariaEscura)).toBeGreaterThanOrEqual(4.5);
-    // botão claro da faixa de contato (fundo + principal escura)
     expect(contraste(c.corPrimariaEscura, c.corFundo)).toBeGreaterThanOrEqual(4.5);
     for (const fundo of [c.corFundo, c.corFundoSuave, c.corCartao]) {
       expect(contraste(c.corTexto, fundo)).toBeGreaterThanOrEqual(7);

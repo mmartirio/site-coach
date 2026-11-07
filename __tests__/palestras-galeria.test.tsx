@@ -27,7 +27,6 @@ describe("cards de palestras e treinamentos", () => {
     expect(within(secao).getByText("8 horas", { exact: false }).querySelector("svg.lucide-clock")).not.toBeNull();
     expect(within(secao).getByText("R$ 197,00")).toBeInTheDocument();
     expect(within(secao).getByText("O que você vai aprender")).toBeInTheDocument();
-    // linhas vazias da lista são ignoradas
     const lista = within(secao).getByText("Tópico A").closest("ul")!;
     expect(within(lista).getAllByRole("listitem")).toHaveLength(2);
   });
@@ -51,7 +50,7 @@ describe("cards de palestras e treinamentos", () => {
       delete it.duracao;
       delete it.preco;
     }
-    antigo.secoes.find((s: Secao) => s.tipo === "eventos").itens[1].formato = "curso"; // valor que não existe mais
+    antigo.secoes.find((s: Secao) => s.tipo === "eventos").itens[1].formato = "curso";
     const r = siteSchema.safeParse(antigo);
     expect(r.success).toBe(true);
     const ev = r.success && r.data.secoes.find((s) => s.tipo === "eventos");
@@ -73,7 +72,6 @@ describe("galeria", () => {
   };
 
   beforeAll(() => {
-    // jsdom não implementa <dialog>.showModal/close
     HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
     HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
   });
@@ -95,7 +93,7 @@ describe("galeria", () => {
     expect(within(tela).getByText(/2 de 3/)).toBeInTheDocument();
     fireEvent.click(within(tela).getByRole("button", { name: "Foto anterior" }));
     fireEvent.click(within(tela).getByRole("button", { name: "Foto anterior" }));
-    expect(within(tela).getByText(/3 de 3/)).toBeInTheDocument(); // volta para a última
+    expect(within(tela).getByText(/3 de 3/)).toBeInTheDocument();
     fireEvent.click(within(tela).getByRole("button", { name: "Fechar" }));
     expect(tela).not.toHaveAttribute("open");
   });

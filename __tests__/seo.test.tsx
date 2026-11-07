@@ -5,7 +5,6 @@ import { conteudoPadrao } from "@/lib/conteudo-padrao";
 import { siteSchema, type Site } from "@/lib/schema";
 import { dadosEstruturados, imagemCompartilhamento, jsonLd } from "@/lib/seo";
 
-// seo.ts importa next/headers (só usado em urlBase, que não é testado aqui)
 jest.mock("next/headers", () => ({ headers: jest.fn() }));
 
 const clonar = (): Site => structuredClone(conteudoPadrao);
