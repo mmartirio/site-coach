@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { estaLogado } from "@/lib/auth";
 import { painelConfigurado } from "@/lib/sessao";
 import { entrar } from "../actions";
+import { CampoSenha } from "../CampoSenha";
 
 export default async function Login({ searchParams }: { searchParams: Promise<{ erro?: string }> }) {
   if (await estaLogado()) redirect("/admin");
@@ -24,7 +25,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
             </label>
             <label className="adm-campo">
               <span>Senha</span>
-              <input type="password" name="senha" required autoComplete="current-password" />
+              <CampoSenha />
             </label>
             {erro && <p className="adm-erro">E-mail ou senha incorretos.</p>}
             <button className="adm-btn adm-btn--primario" type="submit">
